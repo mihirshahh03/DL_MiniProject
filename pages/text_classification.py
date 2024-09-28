@@ -66,8 +66,8 @@ class CustomMultinomialNB:
 
 
 # Load model and vectorizer
-model_filename = r'C:\Users\ASUS\Desktop\College\Sem7\DL\M1_DL_Project\DL_MiniProject\language_detection_model.pkl'
-vectorizer_filename = r'C:\Users\ASUS\Desktop\College\Sem7\DL\M1_DL_Project\DL_MiniProject\count_vectorizer.pkl'
+model_filename = r'C:\Users\ronit\OneDrive\Desktop\College\Sem_7\NNDL\NNDL_Repo\DL_MiniProject\language_detection_model.pkl'
+vectorizer_filename = r'C:\Users\ronit\OneDrive\Desktop\College\Sem_7\NNDL\NNDL_Repo\DL_MiniProject\count_vectorizer.pkl'
 
 # Load the trained model and vectorizer
 model = joblib.load(model_filename)

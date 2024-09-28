@@ -1,48 +1,48 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 
-# Load the necessary files (only the ones that work)
-with open(r'C:\Users\ASUS\Desktop\College\Sem7\DL\M1_DL_Project\DL_MiniProject\notebooks\polynomial_features.pkl', 'rb') as pf_file:
-    poly_features = pickle.load(pf_file)
+# Load the saved RandomForest model
+model = joblib.load(r'C:\Users\ronit\OneDrive\Desktop\College\Sem_7\NNDL\NNDL_Repo\DL_MiniProject\random_forest_model.pkl')
 
-with open(r'C:\Users\ASUS\Desktop\College\Sem7\DL\M1_DL_Project\DL_MiniProject\notebooks\scaler.pkl', 'rb') as scaler_file:
-    scaler = pickle.load(scaler_file)
-    print(type(scaler))  # Should print something like <class 'sklearn.preprocessing._data.StandardScaler'>
+# Create a Streamlit app for prediction
+st.title("Insurance Charges Prediction")
 
+# Input features
+age = st.number_input("Age", min_value=18, max_value=100, step=1)
+bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, step=0.1)
+children = st.number_input("Number of children", min_value=0, max_value=10, step=1)
 
-# Streamlit App
-st.title("Medical Insurance Cost Prediction")
+# Map sex to numerical values
+sex_map = {
+    "Female": 0,
+    "Male": 1
+}
+sex_input = st.selectbox("Sex", list(sex_map.keys()))
+sex = sex_map[sex_input]  # Get the corresponding value
 
-# Input fields for the user
-age = st.number_input("Age", min_value=18, max_value=100, value=25)
+# Map smoker status to numerical values
+smoker_map = {
+    "No": 0,
+    "Yes": 1
+}
+smoker_input = st.selectbox("Smoker", list(smoker_map.keys()))
+smoker = smoker_map[smoker_input]  # Get the corresponding value
 
-# Extract only the numeric part of the tuple (1 for Male, 0 for Female)
-sex = st.selectbox("Sex", options=[("Male", 1), ("Female", 0)])[1]
+# Map region names to corresponding values
+region_map = {
+    "northeast": 0,
+    "northwest": 1,
+    "southeast": 2,
+    "southwest": 3
+}
+region_input = st.selectbox("Region", list(region_map.keys()))
+region = region_map[region_input]  # Get the corresponding value
 
-bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, value=25.0)
-children = st.number_input("Number of Children", min_value=0, max_value=10, value=0)
+# Create a feature array based on user inputs
+features = np.array([[age, bmi, children, sex, smoker, region]])
 
-# Extract only the numeric part of the tuple (1 for Yes, 0 for No)
-smoker = st.selectbox("Smoker", options=[("Yes", 1), ("No", 0)])[1]
-
-# Extract only the numeric part of the tuple (0 for Northeast, 1 for Northwest, etc.)
-region = st.selectbox("Region", options=[("Northeast", 0), ("Northwest", 1), ("Southeast", 2), ("Southwest", 3)])[1]
-
-# Placeholder message in case models are not available
-st.warning("Note: The prediction models are unavailable due to file issues.")
-
-# Predict button
+# Make prediction
 if st.button("Predict Charges"):
-    # Convert inputs to array
-    user_input = np.array([[age, sex, bmi, children, smoker, region]])
-
-    # Scale the input data
-    user_input_scaled = scaler.transform(np.array(user_input))
-
-
-    # Apply polynomial features
-    user_input_poly = poly_features.transform(user_input_scaled)
-
-    # Placeholder for prediction since no working model is available
-    st.error("Model for prediction is currently unavailable. Please load a valid model.")
+    prediction = model.predict(features)
+    st.write(f"Predicted Insurance Charges: ${prediction[0]:.2f}")
