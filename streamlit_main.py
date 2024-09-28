@@ -1,20 +1,44 @@
+# streamlit_app.py
 import streamlit as st
 
 # App title
 st.title("Machine Learning Models Dashboard")
 
+# Hide sidebar
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# Create a container for the buttons
+button_container = st.container()
+
 # Display buttons for different models
-if st.button("Text Classification"):
-    st.experimental_set_query_params(page="text_classification")
+def navigate_to_page(page_name):
+    st.experimental_set_query_params(page=page_name)
 
-if st.button("Medical Pill Classification"):
-    st.experimental_set_query_params(page="pill_classification")
+button_container.button("Text Classification", on_click=lambda: navigate_to_page("text_classification"), use_container_width=True)
+button_container.button("Medical Pill Classification", on_click=lambda: navigate_to_page("pill_classification"), use_container_width=True)
+button_container.button("Insurance Cost Prediction", on_click=lambda: navigate_to_page("insurance_prediction"), use_container_width=True)
+button_container.button("Image Segmentation", on_click=lambda: navigate_to_page("image_segmentation"), use_container_width=True)
+button_container.button("Netflix Title Generation", on_click=lambda: navigate_to_page("netflix_title_generator"), use_container_width=True)
 
-if st.button("Insurance Cost Prediction"):
-    st.experimental_set_query_params(page="insurance_prediction")
+# Get the current page from query params
+query_params = st.experimental_get_query_params()
+page = query_params.get("page", [""])[0]
 
-if st.button("Image Segmentation"):
-    st.experimental_set_query_params(page="image_segmentation")
-
-if st.button("Netflix Title Generation"):
-    st.experimental_set_query_params(page="netflix_title_generation")
+# Render the selected page
+if page == "text_classification":
+    exec(open("pages/text_classification.py").read())
+elif page == "pill_classification":
+    exec(open("pages/pill_classification.py").read())
+elif page == "insurance_prediction":
+    exec(open("pages/insurance_prediction.py").read())
+elif page == "image_segmentation":
+    exec(open("pages/image_segmentation.py").read())
+elif page == "netflix_title_generator":
+    exec(open("pages/netflix_title_generator.py").read())
