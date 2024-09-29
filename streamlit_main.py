@@ -2,7 +2,7 @@
 import streamlit as st
 
 # App title
-st.title("Machine Learning Models Dashboard")
+st.title("Deep Learning Models Dashboard")
 
 # Hide sidebar
 hide_streamlit_style = """
@@ -22,10 +22,10 @@ def navigate_to_page(page_name):
     st.experimental_set_query_params(page=page_name)
 
 button_container.button("Text Classification", on_click=lambda: navigate_to_page("text_classification"), use_container_width=True)
-button_container.button("Medical Pill Classification", on_click=lambda: navigate_to_page("pill_classification"), use_container_width=True)
+button_container.button("Drug Classification", on_click=lambda: navigate_to_page("pill_classification"), use_container_width=True)
 button_container.button("Insurance Cost Prediction", on_click=lambda: navigate_to_page("insurance_prediction"), use_container_width=True)
 button_container.button("Image Segmentation", on_click=lambda: navigate_to_page("image_segmentation"), use_container_width=True)
-button_container.button("Netflix Title Generation", on_click=lambda: navigate_to_page("netflix_title_generator"), use_container_width=True)
+button_container.button("Plot based Title Generation", on_click=lambda: navigate_to_page("netflix_title_generator"), use_container_width=True)
 
 # Get the current page from query params
 query_params = st.experimental_get_query_params()
